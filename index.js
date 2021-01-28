@@ -7,14 +7,12 @@ const nuxtConfig = require('./nuxt.config');
 
 function fastifyNuxt(fastify, options, done) {
   const isDev = process.env.NODE_ENV !== 'production';
-  const publicPath = nuxtConfig.publicPath
-    ? `${nuxtConfig.publicPath}*`
-    : '/_nuxt/*';
+  const publicPath = nuxtConfig.publicPath ? `${nuxtConfig.publicPath}*` : '/_nuxt/*';
 
   const app = loadNuxt(isDev ? 'dev' : 'start');
 
   app
-    .then((nuxt) => {
+    .then(nuxt => {
       // Build only in dev mode with hot-reloading
       if (process.env.NODE_ENV !== 'production') {
         build(nuxt);
@@ -27,10 +25,13 @@ function fastifyNuxt(fastify, options, done) {
         })
         .after(() => {
           fastify.nuxt(publicPath);
+          if (isDev) {
+            fastify.nuxt('/__webpack_hmr/*');
+          }
         });
       done();
     })
-    .catch((err) => done(err));
+    .catch(err => done(err));
 
   function route(path, opts, callback) {
     opts = opts || {
@@ -47,17 +48,11 @@ function fastifyNuxt(fastify, options, done) {
     assert(typeof path === 'string', 'path must be a string');
 
     if (opts.method) {
-      assert(
-        typeof opts.method === 'string',
-        'options.method must be a string'
-      );
+      assert(typeof opts.method === 'string', 'options.method must be a string');
     }
 
     if (opts.schema) {
-      assert(
-        typeof opts.schema === 'object',
-        'options.schema must be an object'
-      );
+      assert(typeof opts.schema === 'object', 'options.schema must be an object');
     }
 
     if (callback) {
@@ -69,13 +64,11 @@ function fastifyNuxt(fastify, options, done) {
     this[method.toLowerCase()](path, opts, handler);
 
     function handler(req, reply) {
-      for (const [headerName, headerValue] of Object.entries(
-        reply.getHeaders()
-      )) {
+      for (const [headerName, headerValue] of Object.entries(reply.getHeaders())) {
         reply.raw.setHeader(headerName, headerValue);
       }
 
-      app.then((nuxt) => {
+      app.then(nuxt => {
         if (callback) {
           return callback(nuxt, req, reply);
         }

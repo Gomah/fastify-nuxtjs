@@ -1,6 +1,6 @@
 {
   "name": "fastify-nuxtjs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Vue server side rendering support for Fastify with Nuxt",
   "main": "index.js",
   "typings": "index.d.ts",

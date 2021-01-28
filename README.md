@@ -1,3 +1,5 @@
+[![fastify-nuxtjs](https://fastify-nuxt.vercel.app/preview.png)](https://fastify-nuxt.vercel.app)
+
 # fastify-nuxtjs
 
 [![npm version][npm-version-src]][npm-version-href]
@@ -11,7 +13,6 @@ Vue server side rendering support for Fastify with [Nuxt.js](https://nuxtjs.org/
 
 ## Install
 
-
 Install with yarn:
 
 ```bash
@@ -23,7 +24,6 @@ Install with npm:
 ```bash
 npm install fastify-nuxtjs nuxt
 ```
-
 
 ## Usage
 
@@ -37,7 +37,7 @@ fastify.register(require('fastify-nuxtjs')).after(() => {
   fastify.nuxt('/hello');
 });
 
-fastify.listen(3000, err => {
+fastify.listen(3000, (err) => {
   if (err) throw err;
   console.log('Server listening on http://localhost:3000');
 });

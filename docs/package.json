@@ -1,0 +1,16 @@
+{
+  "name": "fastify-nuxtjs-docs",
+  "version": "1.0.1",
+  "description": "Docs for fastify-nuxtjs",
+  "private": true,
+  "author": "Thomas Marrec - @Gomah (https://gomah.fr)",
+  "scripts": {
+    "dev": "nuxt",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxt/content-theme-docs": "^0.8.2",
+    "nuxt": "^2.14.12"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Fastify Nuxt.js",
+  "url": "https://fastify-nuxt.vercel.app",
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
+  },
+  "github": "Gomah/fastify-nuxtjs",
+  "twitter": "@gomah",
+  "defaultBranch": "main"
+}

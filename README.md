@@ -22,7 +22,7 @@ fastify.register(require('fastify-nuxtjs')).after(() => {
   fastify.nuxt('/hello');
 });
 
-fastify.listen(3000, (err) => {
+fastify.listen(3000, err => {
   if (err) throw err;
   console.log('Server listening on http://localhost:3000');
 });

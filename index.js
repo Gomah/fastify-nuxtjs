@@ -12,15 +12,15 @@ function fastifyNuxt(fastify, options, done) {
   const app = loadNuxt(isDev ? 'dev' : 'start');
 
   app
-    .then(nuxt => {
+    .then((nuxt) => {
       // Build only in dev mode with hot-reloading
-      if (process.env.NODE_ENV !== 'production') {
+      if (isDev) {
         build(nuxt);
       }
 
       fastify
         .decorate('nuxt', route.bind(fastify))
-        .addHook('onClose', function() {
+        .addHook('onClose', function () {
           nuxt.close();
         })
         .after(() => {
@@ -31,7 +31,7 @@ function fastifyNuxt(fastify, options, done) {
         });
       done();
     })
-    .catch(err => done(err));
+    .catch((err) => done(err));
 
   function route(path, opts, callback) {
     opts = opts || {
@@ -68,7 +68,7 @@ function fastifyNuxt(fastify, options, done) {
         reply.raw.setHeader(headerName, headerValue);
       }
 
-      app.then(nuxt => {
+      app.then((nuxt) => {
         if (callback) {
           return callback(nuxt, req, reply);
         }

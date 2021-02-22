@@ -61,6 +61,31 @@ fastify.nuxt('/hello', (app, req, reply) => {
 });
 ```
 
+### Serve all routes from your `pages/` folder
+
+Using `*`:
+
+```ts
+const fastify = require('fastify')();
+
+fastify.register(require('fastify-nuxtjs')).after(() => {
+  fastify.nuxt('*');
+});
+```
+
+Or import your generated `routes.json` from your `.nuxt` folder:
+
+```ts
+const nuxtRoutes = require('./.nuxt/routes.json');
+const fastify = require('fastify')();
+
+fastify.register(require('fastify-nuxtjs')).after(() => {
+  nuxtRoutes.forEach((nuxtRoute) => {
+    fastify.nuxt(nuxtRoute.path);
+  });
+});
+```
+
 ## Acknowledgements
 
 Heavily inspired by [fastify-nextjs](https://github.com/fastify/fastify-nextjs)

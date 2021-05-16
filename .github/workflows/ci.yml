@@ -30,7 +30,7 @@ jobs:
         run: yarn install --frozen-lockfile --silent
 
       - name: Test
-        run: yarn test
+        run: yarn test --no-check-coverage
 
   automerge:
     needs: test

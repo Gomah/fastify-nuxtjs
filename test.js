@@ -6,7 +6,7 @@ const Fastify = require('fastify');
 const { loadNuxt } = require('nuxt');
 const pino = require('pino');
 
-test('should construct nuxt with proper environment', async t => {
+test('should construct nuxt with proper environment', async (t) => {
   t.plan(2);
 
   var app;
@@ -23,11 +23,11 @@ test('should construct nuxt with proper environment', async t => {
   app.close();
 });
 
-test('should return an html document', t => {
+test('should return an html document', (t) => {
   t.plan(3);
 
   const fastify = Fastify();
-  t.tearDown(() => fastify.close());
+  t.teardown(() => fastify.close());
 
   fastify.register(require('./index')).after(() => {
     fastify.nuxt('/hello');
@@ -46,11 +46,11 @@ test('should return an html document', t => {
   );
 });
 
-test('should support different methods', t => {
+test('should support different methods', (t) => {
   t.plan(3);
 
   const fastify = Fastify();
-  t.tearDown(() => fastify.close());
+  t.teardown(() => fastify.close());
 
   fastify.register(require('./index')).after(() => {
     fastify.nuxt('/hello', { method: 'options' });
@@ -69,11 +69,11 @@ test('should support different methods', t => {
   );
 });
 
-test('should support a custom handler', t => {
+test('should support a custom handler', (t) => {
   t.plan(3);
 
   const fastify = Fastify();
-  t.tearDown(() => fastify.close());
+  t.teardown(() => fastify.close());
 
   fastify.register(require('./index')).after(() => {
     fastify.nuxt('/hello', (app, req, reply) => {
@@ -94,11 +94,11 @@ test('should support a custom handler', t => {
   );
 });
 
-test('should return 404 on undefined route', t => {
+test('should return 404 on undefined route', (t) => {
   t.plan(2);
 
   const fastify = Fastify();
-  t.tearDown(() => fastify.close());
+  t.teardown(() => fastify.close());
 
   fastify.register(require('./index')).after(() => {
     fastify.nuxt('/hello');
@@ -116,11 +116,11 @@ test('should return 404 on undefined route', t => {
   );
 });
 
-test('should throw if path is not a string', t => {
+test('should throw if path is not a string', (t) => {
   t.plan(2);
 
   const fastify = Fastify();
-  fastify.register(require('./index')).after(err => {
+  fastify.register(require('./index')).after((err) => {
     t.error(err);
     try {
       fastify.nuxt(null);
@@ -133,11 +133,11 @@ test('should throw if path is not a string', t => {
   fastify.close();
 });
 
-test('should throw if opts.method is not a string', t => {
+test('should throw if opts.method is not a string', (t) => {
   t.plan(2);
 
   const fastify = Fastify();
-  fastify.register(require('./index')).after(err => {
+  fastify.register(require('./index')).after((err) => {
     t.error(err);
     try {
       fastify.nuxt('/hello', { method: 1 });
@@ -150,11 +150,11 @@ test('should throw if opts.method is not a string', t => {
   fastify.close();
 });
 
-test('should throw if opts.schema is not an object', t => {
+test('should throw if opts.schema is not an object', (t) => {
   t.plan(2);
 
   const fastify = Fastify();
-  fastify.register(require('./index')).after(err => {
+  fastify.register(require('./index')).after((err) => {
     t.error(err);
     try {
       fastify.nuxt('/hello', { schema: 1 });
@@ -167,11 +167,11 @@ test('should throw if opts.schema is not an object', t => {
   fastify.close();
 });
 
-test('should throw if callback is not a function', t => {
+test('should throw if callback is not a function', (t) => {
   t.plan(2);
 
   const fastify = Fastify();
-  fastify.register(require('./index')).after(err => {
+  fastify.register(require('./index')).after((err) => {
     t.error(err);
     try {
       fastify.nuxt('/hello', {}, 1);
@@ -184,7 +184,7 @@ test('should throw if callback is not a function', t => {
   fastify.close();
 });
 
-test('should serve /_nuxt/* static assets', t => {
+test('should serve /_nuxt/* static assets', (t) => {
   t.plan(9);
 
   const manifest = require('./.nuxt/dist/server/client.manifest.json');
@@ -195,21 +195,21 @@ test('should serve /_nuxt/* static assets', t => {
     fastify.nuxt('/hello');
   });
 
-  t.tearDown(() => fastify.close());
+  t.teardown(() => fastify.close());
 
   const commonAssets = manifest.initial;
 
-  commonAssets.map(suffix => testNuxtAsset(t, fastify, `/_nuxt/${suffix}`));
+  commonAssets.map((suffix) => testNuxtAsset(t, fastify, `/_nuxt/${suffix}`));
 });
 
-test('should not log any errors', t => {
+test('should not log any errors', (t) => {
   t.plan(5);
 
   let showedError = false;
   const logger = pino({
     level: 'error',
     formatters: {
-      log: obj => {
+      log: (obj) => {
         showedError = true;
         return obj;
       },
@@ -233,19 +233,19 @@ test('should not log any errors', t => {
       t.error(err);
       t.equal(res.statusCode, 200);
       t.equal(res.headers['content-type'], 'text/html; charset=utf-8');
-      t.includes(res.payload, '<h1 class="title">Hello World</h1>');
+      t.match(res.payload, '<h1 class="title">Hello World</h1>');
       t.equal(showedError, false, 'Should not show any error');
     }
   );
 });
 
-test('should respect plugin logLevel', t => {
+test('should respect plugin logLevel', (t) => {
   t.plan(5);
 
   let didLog = false;
   const logger = pino({
     formatters: {
-      log: obj => {
+      log: (obj) => {
         didLog = true;
         return obj;
       },
@@ -264,7 +264,7 @@ test('should respect plugin logLevel', t => {
       fastify.nuxt('/hello');
     });
 
-  t.tearDown(() => fastify.close());
+  t.teardown(() => fastify.close());
 
   fastify.inject(
     {
@@ -275,17 +275,17 @@ test('should respect plugin logLevel', t => {
       t.error(err);
       t.equal(res.statusCode, 200);
       t.equal(res.headers['content-type'], 'text/html; charset=utf-8');
-      t.includes(res.payload, '<h1 class="title">Hello World</h1>');
+      t.match(res.payload, '<h1 class="title">Hello World</h1>');
       t.equal(didLog, false);
     }
   );
 });
 
-test('should preserve Fastify response headers set by plugins and hooks', t => {
+test('should preserve Fastify response headers set by plugins and hooks', (t) => {
   t.plan(3);
 
   const fastify = Fastify();
-  t.tearDown(() => fastify.close());
+  t.teardown(() => fastify.close());
 
   fastify.register(require('./index')).after(() => {
     fastify.addHook('onRequest', (req, reply, done) => {

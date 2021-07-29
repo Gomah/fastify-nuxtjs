@@ -86,6 +86,16 @@ fastify.register(require('fastify-nuxtjs')).after(() => {
 });
 ```
 
+### Typescript support
+
+```
+import fastifyNuxt from "fastify-nuxtjs";
+
+app.register(fastifyNuxt).after(() => {
+    app.nuxt('*');
+});
+```
+
 ## Acknowledgements
 
 Heavily inspired by [fastify-nextjs](https://github.com/fastify/fastify-nextjs)
